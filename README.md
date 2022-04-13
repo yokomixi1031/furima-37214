@@ -28,11 +28,9 @@
 | category_id         | integer    | null: false                     |
 | condition_id        | integer    | null: false                     |
 | delivery_charge_id  | integer    | null: false                     |
-| ship-from_area_id   | integer    | null: false                     |
-| delivery_days_id    | integer    | null: false                     |
+| ship_from_area_id   | integer    | null: false                     |
+| delivery_day_id     | integer    | null: false                     |
 | price               | integer    | null: false                     |
-| sales_commission    | string     | null: false                     |
-| sales_profit        | string     | null: false                     |
 | user                | references | null: false, foreign_key: true  |
 
 ### Association
@@ -58,10 +56,10 @@
 | Column             | Type       | Options                        |
 | ------------------ | ---------- | ------------------------------ |
 | postal_code        | string     | null: false                    |
-| ship-from_area_id  | integer    | null: false                    |
+| ship_from_area_id  | integer    | null: false                    |
 | municipalities     | string     | null: false                    |
 | address            | string     | null: false                    |
-| building_name      | references |                                |
+| building_name      | string     |                                |
 | telephone          | string     | null: false                    |
 | buyer              | references | null: false, foreign_key: true |
 
