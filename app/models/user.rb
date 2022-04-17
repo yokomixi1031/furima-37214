@@ -10,6 +10,10 @@ class User < ApplicationRecord
   validates :nickname,            presence: true
   validates :birth_day,           presence: true
 
+  # パスワードは半角英字と数字が１つずつ以上入っていることを必須とする
+  VALID_PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?[\d])[a-z\d]+\z/i.freeze
+  validates :password, format: { with: VALID_PASSWORD_REGEX, message: "は半角英数を両方含む必要があります"}
+
   with_options presence: true do
     # ひらがな、カタカナ、漢字のみ許可する
     validates :last_name,  format: {with: /\A[ぁ-んァ-ヶ一-龥々ー]+\z/, message: "is invalid. Input full-width characters."}
@@ -20,5 +24,4 @@ class User < ApplicationRecord
     # 半角英字数字のみ許可する
     validates :password_confirmation, format: {with: /\A[a-z0-9]+\z/i, message: "is invalid. Input half-width characters."}
   end
-
 end
