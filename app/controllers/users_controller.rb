@@ -1,7 +1,6 @@
 class UsersController < ApplicationController
-
   def new
-    @user = User.new 
+    @user = User.new
   end
 
   def create
@@ -18,5 +17,4 @@ class UsersController < ApplicationController
     @user.destroy
     redirect_to root_path
   end
-
 end
