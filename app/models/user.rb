@@ -4,8 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :items
-  has_many :buyers
+  # has_many :items
+  # has_many :buyers
 
   validates :nickname,            presence: true
   validates :birth_day,           presence: true
@@ -21,7 +21,5 @@ class User < ApplicationRecord
     # カタカナのみ許可する
     validates :last_name_furigana,  format: { with: /\A[ァ-ヶー]+\z/, message: 'is invalid. Input full-width katakana characters.' }
     validates :first_name_furigana, format: { with: /\A[ァ-ヶー]+\z/, message: 'is invalid. Input full-width katakana characters.' }
-    # 半角英字数字のみ許可する
-    validates :password_confirmation, format: { with: /\A[a-z0-9]+\z/i, message: 'is invalid. Input half-width characters.' }
   end
 end
