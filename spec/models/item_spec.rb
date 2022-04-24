@@ -13,6 +13,11 @@ RSpec.describe Item, type: :model do
     end
 
     context '内容に問題がある場合' do
+      it '画像が空だと保存できないこと' do
+        @item.image = nil
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Image can't be blank")
+      end
       it 'item_nameが空だと保存できないこと' do
         @item.item_name = ''
         @item.valid?
@@ -32,6 +37,16 @@ RSpec.describe Item, type: :model do
         @item.price = 100_000_000
         @item.valid?
         expect(@item.errors.full_messages).to include('Price must be less than or equal to 9999999')
+      end
+      it 'priceが空では登録できない' do
+        @item.price = ''
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Price can't be blank")
+      end
+      it 'priceが半角数字以外では登録できない' do
+        @item.price = '３３３'
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Price is not a number")
       end
       it '「カテゴリー」選択が「--」の時は保存できないようにする' do
         @item.category_id = '1'
