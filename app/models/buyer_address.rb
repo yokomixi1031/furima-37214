@@ -1,6 +1,6 @@
 class BuyerAddress
   include ActiveModel::Model
-  attr_accessor :user_id, :item_id, :postal_code, :ship_from_area_id, :municipalities, :address, :building_name, :telephone 
+  attr_accessor :user_id, :item_id, :postal_code, :ship_from_area_id, :municipalities, :address, :building_name, :telephone, :token 
 
   with_options presence: true do
     validates :user_id
@@ -10,7 +10,8 @@ class BuyerAddress
     validates :address
     validates :telephone, format: {with: /\A\d{10,11}\z/,message: "is invalid. Input only number"}
     validates :telephone, format: {with: /\A\d{10,11}\z/,message: "is too short"}
-  end
+    validates :token
+    end
   validates :ship_from_area_id,  numericality: { other_than: 1, message: "can't be blank" }
 
   def save
