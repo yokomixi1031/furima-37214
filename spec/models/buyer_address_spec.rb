@@ -4,7 +4,9 @@ RSpec.describe BuyerAddress, type: :model do
   describe '購入者情報の保存' do
     before do
       user = FactoryBot.create(:user)
-      @buyer_address = FactoryBot.build(:buyer_address, user_id: user.id)
+      item = FactoryBot.create(:item)
+      @buyer_address = FactoryBot.build(:buyer_address, item_id: item.id, user_id: user.id)
+      sleep 0.5
     end
 
     context '内容に問題ない場合' do
@@ -51,10 +53,15 @@ RSpec.describe BuyerAddress, type: :model do
       it 'telephoneが全角数字だと保存できないこと' do
         @buyer_address.telephone = '２０００'
         @buyer_address.valid?
-        expect(@buyer_address.errors.full_messages).to include('Telephone is invalid. Input only number')
+        expect(@buyer_address.errors.full_messages).to include('Telephone is too short')
       end
       it 'telephoneが10桁以上11桁以内の半角数値でないと保存できないこと' do
         @buyer_address.telephone = '090123456'
+        @buyer_address.valid?
+        expect(@buyer_address.errors.full_messages).to include('Telephone is too short')
+      end
+      it 'telephoneが10桁以上11桁以内の半角数値でないと保存できないこと' do
+        @buyer_address.telephone = '090123456789'
         @buyer_address.valid?
         expect(@buyer_address.errors.full_messages).to include('Telephone is too short')
       end
@@ -62,6 +69,16 @@ RSpec.describe BuyerAddress, type: :model do
         @buyer_address.token = nil
         @buyer_address.valid?
         expect(@buyer_address.errors.full_messages).to include("Token can't be blank")
+      end
+      it 'user_idが空では登録できないこと' do
+        @buyer_address.user_id = nil
+        @buyer_address.valid?
+        expect(@buyer_address.errors.full_messages).to include("User can't be blank")
+      end
+      it 'item_idが空では登録できないこと' do
+        @buyer_address.item_id = nil
+        @buyer_address.valid?
+        expect(@buyer_address.errors.full_messages).to include("Item can't be blank")
       end
     end
   end
