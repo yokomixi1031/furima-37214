@@ -1,8 +1,9 @@
 class BuyerAddress
   include ActiveModel::Model
-  attr_accessor :user_id, :item_id, :postal_code, :ship_from_area_id, :municipalities, :address, :building_name, :telephone, :token 
+  attr_accessor :user_id, :item_id, :postal_code, :ship_from_area_id, :municipalities, :address, :building_name, :telephone, :token
 
   with_options presence: true do
+    validates :token
     validates :user_id
     validates :item_id
     validates :postal_code, format: {with: /\A[0-9]{3}-[0-9]{4}\z/, message: "is invalid. Include hyphen(-)"}
@@ -10,7 +11,6 @@ class BuyerAddress
     validates :address
     validates :telephone, format: {with: /\A\d{10,11}\z/,message: "is invalid. Input only number"}
     validates :telephone, format: {with: /\A\d{10,11}\z/,message: "is too short"}
-    validates :token
     end
   validates :ship_from_area_id,  numericality: { other_than: 1, message: "can't be blank" }
 

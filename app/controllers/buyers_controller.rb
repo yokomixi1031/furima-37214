@@ -4,7 +4,6 @@ class BuyersController < ApplicationController
   before_action :move_to_root_path, only: [:index]
 
   def index
-    @item = Item.find(params[:item_id])
     @buyer_address = BuyerAddress.new
    # @item = @buyer_address.item_id
     #@buyer_address = Item.find(params[:id])
@@ -12,7 +11,6 @@ class BuyersController < ApplicationController
   end
 
   def create
-    @item = Item.find(params[:item_id])
     @buyer_address = BuyerAddress.new(buyer_params)
     if @buyer_address.valid?
       pay_item
@@ -44,6 +42,7 @@ class BuyersController < ApplicationController
 
   def move_to_root_path
     redirect_to root_path if current_user.id == @item.user_id
+    redirect_to root_path if @item.buyer.present?
   end
 
 end
