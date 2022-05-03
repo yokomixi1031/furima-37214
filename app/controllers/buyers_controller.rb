@@ -5,8 +5,8 @@ class BuyersController < ApplicationController
 
   def index
     @buyer_address = BuyerAddress.new
-   # @item = @buyer_address.item_id
-    #@buyer_address = Item.find(params[:id])
+    # @item = @buyer_address.item_id
+    # @buyer_address = Item.find(params[:id])
     # @item = Item.find(params[:id])
   end
 
@@ -28,11 +28,13 @@ class BuyersController < ApplicationController
   end
 
   def buyer_params
-    params.require(:buyer_address).permit(:postal_code, :ship_from_area_id, :municipalities, :address, :building_name, :telephone, :price).merge(user_id: current_user.id, item_id: params[:item_id], token: params[:token])
+    params.require(:buyer_address).permit(:postal_code, :ship_from_area_id, :municipalities, :address, :building_name, :telephone, :price).merge(
+      user_id: current_user.id, item_id: params[:item_id], token: params[:token]
+    )
   end
 
   def pay_item
-    Payjp.api_key = ENV["PAYJP_SECRET_KEY"]
+    Payjp.api_key = ENV['PAYJP_SECRET_KEY']
     Payjp::Charge.create(
       amount: @item.price,
       card: buyer_params[:token],
@@ -44,5 +46,4 @@ class BuyersController < ApplicationController
     redirect_to root_path if current_user.id == @item.user_id
     redirect_to root_path if @item.buyer.present?
   end
-
 end
