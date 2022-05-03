@@ -1,5 +1,7 @@
 class BuyersController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_item, only: [:index, :create, :move_to_root_path]
+  before_action :move_to_root_path, only: [:index]
 
   def index
     @item = Item.find(params[:item_id])
@@ -23,6 +25,10 @@ class BuyersController < ApplicationController
 
   private
 
+  def set_item
+    @item = Item.find(params[:item_id])
+  end
+
   def buyer_params
     params.require(:buyer_address).permit(:postal_code, :ship_from_area_id, :municipalities, :address, :building_name, :telephone, :price).merge(user_id: current_user.id, item_id: params[:item_id], token: params[:token])
   end
@@ -35,4 +41,9 @@ class BuyersController < ApplicationController
       currency: 'jpy'
     )
   end
+
+  def move_to_root_path
+    redirect_to root_path if current_user.id == @item.user_id
+  end
+
 end
